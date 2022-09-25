@@ -53,6 +53,8 @@ public class Asteroid : MonoBehaviour
 
     private void DestroyAsteroid()
     {
+        SoundManager.instance.PlaySound(SoundClip.Explosion_Small);
+
         // Check if the asteroid is large enough to split in half
         // (both parts must be greater than the minimum size)
         if ((size * 0.5f) >= minSize)

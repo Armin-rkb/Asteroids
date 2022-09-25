@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     public new Rigidbody2D rigidbody { get; private set; }
     public Bullet bulletPrefab;
     public GameObject shield;
+    public GameObject[] WeaponNozzles;
 
     public float thrustSpeed = 1f;
     public bool thrusting { get; private set; }
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour
     public float respawnInvulnerability = 3f;
 
     private bool isShielded = false;
+    private int weaponCount = 1;
 
     private void Awake()
     {
@@ -32,12 +34,14 @@ public class Player : MonoBehaviour
 
         // Subscribe to events.
         ShieldPowerUp.OnShieldCollected += ActivateShield;
+        SpreadShotPowerUp.OnSpreadShotCollected += AddWeapon;
     }
 
     private void OnDisable()
     {
         // Remove from all events.
         ShieldPowerUp.OnShieldCollected -= ActivateShield;
+        SpreadShotPowerUp.OnSpreadShotCollected -= AddWeapon;
     }
 
     private void Update()
@@ -70,8 +74,13 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
-        Bullet bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-        bullet.Project(transform.up);
+        SoundManager.instance.PlaySound(SoundClip.Laser_Shoot);
+
+        for (int i = 0; i < weaponCount; i++)
+        {
+            Bullet bullet = Instantiate(bulletPrefab, WeaponNozzles[i].transform.position, WeaponNozzles[i].transform.rotation);
+            bullet.Project(WeaponNozzles[i].transform.rotation * Vector2.up);
+        }
     }
 
     private void TurnOnCollisions()
@@ -93,6 +102,8 @@ public class Player : MonoBehaviour
             rigidbody.angularVelocity = 0f;
             gameObject.SetActive(false);
 
+            weaponCount = 1;
+            SoundManager.instance.PlaySound(SoundClip.Explosion_Big);
             FindObjectOfType<GameManager>().PlayerDeath(this);
         }
     }
@@ -103,9 +114,11 @@ public class Player : MonoBehaviour
         shield.SetActive(true);
     }
     
-    private void DeactivateShield()
+    private void AddWeapon()
     {
-        isShielded = false;
-        shield.SetActive(false);
+        if (weaponCount != WeaponNozzles.Length)
+        {
+            weaponCount++;
+        }
     }
 }

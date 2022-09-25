@@ -7,7 +7,7 @@ public class ShieldPowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Play Sound
+        SoundManager.instance.PlaySound(SoundClip.PowerUp);
         OnShieldCollected?.Invoke();
         Destroy(gameObject);
     }

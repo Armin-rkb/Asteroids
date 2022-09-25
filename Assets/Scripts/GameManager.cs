@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public int lives { get; private set; }
     public Text livesText;
 
+    private bool firstSpawn = true;
+
     private void Start()
     {
         NewGame();
@@ -38,10 +40,15 @@ public class GameManager : MonoBehaviour
         SetScore(0);
         SetLives(3);
         Respawn();
+        firstSpawn = false;
     }
 
     public void Respawn()
     {
+        if (!firstSpawn)
+        {
+            SoundManager.instance.PlaySound(SoundClip.Respawn);
+        }
         player.transform.position = Vector3.zero;
         player.gameObject.SetActive(true);
     }
