@@ -6,6 +6,9 @@ public class GameManager : MonoBehaviour
     public Player player;
     public ParticleSystem explosionEffect;
     public GameObject gameOverUI;
+    [SerializeField] private GameObject shieldPowerUp;
+    [SerializeField] private GameObject spreadShotPowerUp;
+    [SerializeField] private GameObject rainbowPowerUp;
 
     public int score { get; private set; }
     public Text scoreText;
@@ -65,6 +68,31 @@ public class GameManager : MonoBehaviour
         } else {
             SetScore(score + 25); // large asteroid
         }
+
+        // 5% chance to spawn an powerup.
+        if (Random.value > 0.95)
+        {
+            SpawnPowerUp(asteroid.transform.position);
+        }
+    }
+
+    private void SpawnPowerUp(Vector2 spawnPos)
+    {
+        // Spreadshot is the default powerup to spawn.
+        GameObject powerUp = spreadShotPowerUp;
+
+        // 30% chance to change spreadshot to rainbow or shield
+        if (Random.value > 0.7)
+        {
+            powerUp = shieldPowerUp;
+
+            if (Random.value > 0.5)
+            {
+                powerUp = rainbowPowerUp;
+            }
+        }
+
+        Instantiate(powerUp, spawnPos, Quaternion.identity);
     }
 
     public void PlayerDeath(Player player)

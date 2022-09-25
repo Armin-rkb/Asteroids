@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     public new Rigidbody2D rigidbody { get; private set; }
+    public SpriteRenderer spriteRenderer { get; private set; }
+    public Material defaultMat;
+    public Material rainbowMat;
     public Bullet bulletPrefab;
     public GameObject shield;
     public GameObject[] WeaponNozzles;
@@ -16,13 +20,18 @@ public class Player : MonoBehaviour
 
     public float respawnDelay = 3f;
     public float respawnInvulnerability = 3f;
+    public float rainbowInvulnerability = 10f;
+    public float rainbowMultiplier = 1;
 
     private bool isShielded = false;
     private int weaponCount = 1;
 
+    private IEnumerator blinkCoroutine;
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnEnable()
@@ -30,11 +39,14 @@ public class Player : MonoBehaviour
         // Turn off collisions for a few seconds after spawning to ensure the
         // player has enough time to safely move away from asteroids
         gameObject.layer = LayerMask.NameToLayer("Ignore Collisions");
+        blinkCoroutine = Blink();
+        StartCoroutine(blinkCoroutine);
         Invoke(nameof(TurnOnCollisions), respawnInvulnerability);
-
+        
         // Subscribe to events.
         ShieldPowerUp.OnShieldCollected += ActivateShield;
         SpreadShotPowerUp.OnSpreadShotCollected += AddWeapon;
+        RainbowPowerUp.OnRainbowCollected += SetInvurnable;
     }
 
     private void OnDisable()
@@ -42,6 +54,7 @@ public class Player : MonoBehaviour
         // Remove from all events.
         ShieldPowerUp.OnShieldCollected -= ActivateShield;
         SpreadShotPowerUp.OnSpreadShotCollected -= AddWeapon;
+        RainbowPowerUp.OnRainbowCollected -= SetInvurnable;
     }
 
     private void Update()
@@ -64,11 +77,11 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (thrusting) {
-            rigidbody.AddForce(transform.up * thrustSpeed);
+            rigidbody.AddForce(transform.up * (thrustSpeed * rainbowMultiplier));
         }
 
         if (turnDirection != 0f) {
-            rigidbody.AddTorque(rotationSpeed * turnDirection);
+            rigidbody.AddTorque((rotationSpeed * rainbowMultiplier) * turnDirection);
         }
     }
 
@@ -85,7 +98,19 @@ public class Player : MonoBehaviour
 
     private void TurnOnCollisions()
     {
+        StopCoroutine(blinkCoroutine);
+        rainbowMultiplier = 1;
+        spriteRenderer.enabled = true;
         gameObject.layer = LayerMask.NameToLayer("Player");
+    }
+
+    private IEnumerator Blink()
+    {
+        while(true)
+        {
+            spriteRenderer.enabled = spriteRenderer.enabled ? false : true;
+            yield return new WaitForSeconds(.05f);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -120,5 +145,20 @@ public class Player : MonoBehaviour
         {
             weaponCount++;
         }
+    }
+    
+    private void SetInvurnable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Ignore Collisions");
+        spriteRenderer.material = rainbowMat;
+        rainbowMultiplier = 2;
+
+        Invoke(nameof(SetDefaultMaterial), rainbowInvulnerability);
+        Invoke(nameof(TurnOnCollisions), rainbowInvulnerability);
+    }
+
+    private void SetDefaultMaterial()
+    {
+        spriteRenderer.material = defaultMat;
     }
 }
