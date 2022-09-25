@@ -49,11 +49,15 @@ This includes player shooting, moving, crashing and scoring.
 - Particle effects/trails
 - Show gained score.
 
+## Conclusion
+**End thoughts**: *In the end, my plan was a lot more ambitious than I expected. I got around implementing the power ups feature with 3 power ups. As for gamefeel my focus the visuals with the added post-processing, trail effect, blinking and screen shake, while also having audio there to a sufficient level. If I had more time than the allotted 4 hours, the next game feel I would work on would be visual feedback on the points scored by temporarily adding UI text showing the added score. As for the next gameplay feature, I would first add another enemy which can shoot back at the player and second to that the screen wrapping for more mobility options.*
+
 **Version**: Unity 2020.3.11f1
+
 **Additional Packages**: Post Processing
+
 **Audio BGM**: https://www.chosic.com/download-audio/25053/
+
 **Audio SFX**: https://sfxr.me/
-*Rainbow Shader*: https://gist.github.com/srndpty/aa11c29b83a18e9deb6706f5ba58810c#file-rainbowgradient-shader
 
-*End thoughs*: In the end my plan was a lot more ambitious than I expected. I got around implementing the powerups feature with 3 powerups. As for gamefeel my focus the visuals with the added post processing, trail effect, blinking and screenshake, while also having audio there to a sufficient level. If I had more time than the allotted 4 hours, the next game feel I would work on would be visual feedback on the points scored by temporarily adding UI text showing the added score. As for the next gameplay feature, I would first add another enemy which can shoot back at the player and second to that the screen wrapping for more mobility options.
-
+**Rainbow Shader**: https://gist.github.com/srndpty/aa11c29b83a18e9deb6706f5ba58810c#file-rainbowgradient-shader
