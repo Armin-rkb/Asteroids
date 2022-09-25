@@ -14,6 +14,13 @@ I will be adding and improving on the project within a 4 hour time limit with th
 - After watching pro astroids players and seeing them use the ships momentum to keep crusing across the screen edges seemed really fun. I will try to implement this if I have time left after the power ups and game feel.
 ---
 
+**New enemy:**
+- An enemy which spawn a lot less frequently but has the ability to shoot at the direction of the player.
+
+**Decision:**
+- Seems like a great addition, but not a priority focus. I'll put it in the same category as the Screen Wrapping feature and add it when there is time left.
+---
+
 **Power ups:**
 - Simular to the upgrades idea.
 - Certain astroids will drop a power up to the player.
