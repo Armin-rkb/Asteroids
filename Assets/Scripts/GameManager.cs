@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public Player player;
     public ParticleSystem explosionEffect;
+    public ScreenShake screenShake;
     public GameObject gameOverUI;
     [SerializeField] private GameObject shieldPowerUp;
     [SerializeField] private GameObject spreadShotPowerUp;
@@ -63,10 +64,13 @@ public class GameManager : MonoBehaviour
 
         if (asteroid.size < 0.7f) {
             SetScore(score + 100); // small asteroid
+            screenShake.StartShakeCoroutine(0.05f, 0.05f);
         } else if (asteroid.size < 1.4f) {
             SetScore(score + 50); // medium asteroid
+            screenShake.StartShakeCoroutine(0.10f, 0.1f);
         } else {
             SetScore(score + 25); // large asteroid
+            screenShake.StartShakeCoroutine(0.10f, 0.1f);
         }
 
         // 5% chance to spawn an powerup.

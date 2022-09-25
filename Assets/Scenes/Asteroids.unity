@@ -597,6 +597,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -729,6 +730,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6574b50a0a82a4e47897bb0e30992ffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 519420031}
+  initCamPos: {x: 0, y: 0, z: -10}
 --- !u!1 &523505758
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,6 +954,7 @@ MonoBehaviour:
   rainbowMat: {fileID: 2100000, guid: 4fee175f85962e24da563cabb9d0be89, type: 2}
   bulletPrefab: {fileID: 2758569942672203454, guid: d8d55dfacb762f64cbf4c05cc402a4de,
     type: 3}
+  screenShake: {fileID: 519420033}
   shield: {fileID: 570344028}
   WeaponNozzles:
   - {fileID: 2134263444}
@@ -950,6 +966,7 @@ MonoBehaviour:
   respawnDelay: 3
   respawnInvulnerability: 3
   rainbowInvulnerability: 6
+  rainbowMultiplier: 2
 --- !u!68 &526989107
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -6487,6 +6504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 526989106}
   explosionEffect: {fileID: 945290021}
+  screenShake: {fileID: 519420033}
   gameOverUI: {fileID: 1759306016}
   shieldPowerUp: {fileID: 7849916413050107730, guid: 634b9f2b7a8c7bb48847fda2c67329b2,
     type: 3}

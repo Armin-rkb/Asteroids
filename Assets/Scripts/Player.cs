@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public Material defaultMat;
     public Material rainbowMat;
     public Bullet bulletPrefab;
+    public ScreenShake screenShake;
     public GameObject shield;
     public GameObject[] WeaponNozzles;
 
@@ -87,6 +88,7 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
+        screenShake.StartShakeCoroutine(0.03f, 0.05f);
         SoundManager.instance.PlaySound(SoundClip.Laser_Shoot);
 
         for (int i = 0; i < weaponCount; i++)
@@ -128,6 +130,7 @@ public class Player : MonoBehaviour
             gameObject.SetActive(false);
 
             weaponCount = 1;
+            screenShake.StartShakeCoroutine(0.5f, 0.8f);
             SoundManager.instance.PlaySound(SoundClip.Explosion_Big);
             FindObjectOfType<GameManager>().PlayerDeath(this);
         }
