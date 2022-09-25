@@ -44,22 +44,28 @@ public class Asteroid : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag(Tags.bulletTag) ||
+            collision.collider.gameObject.CompareTag(Tags.shieldTag))
         {
-            // Check if the asteroid is large enough to split in half
-            // (both parts must be greater than the minimum size)
-            if ((size * 0.5f) >= minSize)
-            {
-                CreateSplit();
-                CreateSplit();
-            }
-
-            FindObjectOfType<GameManager>().AsteroidDestroyed(this);
-
-            // Destroy the current asteroid since it is either replaced by two
-            // new asteroids or small enough to be destroyed by the bullet
-            Destroy(gameObject);
+            DestroyAsteroid();
         }
+    }
+
+    private void DestroyAsteroid()
+    {
+        // Check if the asteroid is large enough to split in half
+        // (both parts must be greater than the minimum size)
+        if ((size * 0.5f) >= minSize)
+        {
+            CreateSplit();
+            CreateSplit();
+        }
+
+        FindObjectOfType<GameManager>().AsteroidDestroyed(this);
+
+        // Destroy the current asteroid since it is either replaced by two
+        // new asteroids or small enough to be destroyed by the bullet
+        Destroy(gameObject);
     }
 
     private Asteroid CreateSplit()

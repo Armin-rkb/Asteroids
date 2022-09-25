@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
     public new Rigidbody2D rigidbody { get; private set; }
     public Bullet bulletPrefab;
+    public GameObject shield;
 
     public float thrustSpeed = 1f;
     public bool thrusting { get; private set; }
@@ -14,6 +15,8 @@ public class Player : MonoBehaviour
 
     public float respawnDelay = 3f;
     public float respawnInvulnerability = 3f;
+
+    private bool isShielded = false;
 
     private void Awake()
     {
@@ -26,6 +29,15 @@ public class Player : MonoBehaviour
         // player has enough time to safely move away from asteroids
         gameObject.layer = LayerMask.NameToLayer("Ignore Collisions");
         Invoke(nameof(TurnOnCollisions), respawnInvulnerability);
+
+        // Subscribe to events.
+        ShieldPowerUp.OnShieldCollected += ActivateShield;
+    }
+
+    private void OnDisable()
+    {
+        // Remove from all events.
+        ShieldPowerUp.OnShieldCollected -= ActivateShield;
     }
 
     private void Update()
@@ -69,8 +81,14 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Asteroid"))
+        if (collision.gameObject.CompareTag(Tags.asteroidTag))
         {
+            if (isShielded)
+            {
+                isShielded = false;
+                return;
+            }
+
             rigidbody.velocity = Vector3.zero;
             rigidbody.angularVelocity = 0f;
             gameObject.SetActive(false);
@@ -79,4 +97,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void ActivateShield()
+    {
+        isShielded = true;
+        shield.SetActive(true);
+    }
+    
+    private void DeactivateShield()
+    {
+        isShielded = false;
+        shield.SetActive(false);
+    }
 }
